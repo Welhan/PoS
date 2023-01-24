@@ -10,6 +10,10 @@ class Dashboard extends BaseController
     {
         if (!check_login(session('userID'))) return redirect()->to('/login');
 
-        return view('dashboard/index');
+        $data = [
+            'title' => 'Dashboard'
+        ];
+
+        return view('dashboard/index', $data);
     }
 }

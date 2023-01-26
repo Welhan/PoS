@@ -176,8 +176,8 @@ $menus = generate_menu(session('userID'));
                             <li class="nav-header"><?= $menu->menu; ?></li>
                             <?php $submenus = generate_submenu($menu->id, session('userID')); ?>
                             <?php foreach ($submenus as $submenu) : ?>
-                                <li class="nav-item menu-open">
-                                    <a href="#" class="nav-link <?= ($active->submenu == $submenu->submenu) ? 'active' : ''; ?>">
+                                <li class="nav-item">
+                                    <a href="<?= $submenu->link; ?>" class="nav-link <?= ($active->submenu == $submenu->submenu) ? 'active' : ''; ?>">
                                         <i class="nav-icon <?= $submenu->icon; ?>"></i>
                                         <p>
                                             <?= $submenu->submenu; ?>

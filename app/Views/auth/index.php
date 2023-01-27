@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in (v2)</title>
+    <title>My PoS | Login</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
@@ -20,13 +20,13 @@
 
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="assets/index2.html" class="h1"><b>Admin</b>LTE</a>
+                <h5 class="h1 text-primary"><b>My</b>PoS</h5>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
                 <form action="/logining" method="post">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Username" name="username">
+                        <input type="text" class="form-control" placeholder="Username" name="username" autocomplete="off" autofocus>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
@@ -46,7 +46,6 @@
                         <div class="col-4">
                             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                         </div>
-
                     </div>
                 </form>
             </div>

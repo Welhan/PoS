@@ -6,7 +6,7 @@
     <div class="col-lg-10">
         <div class="card">
             <div class="card-header">
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addModal">
+                <button type="button" class="btn btn-primary btn-sm" id="btnNew">
                     <i class="fas fa-plus"></i>
                 </button>
             </div>
@@ -35,57 +35,37 @@
     </div>
 </div>
 
+<div id="viewModal" style="display: none;"></div>
+<?= $this->endSection(); ?>
 
-<!-- Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Add Anggota</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="/newUser" method="post">
-                <div class="modal-body">
-                    <?= csrf_field(); ?>
+<?= $this->section('javascript'); ?>
 
-                    <div class="form-group row">
-                        <label for="nama" class="col-sm-2 col-form-label col-form-label-sm">Nama</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control form-control-sm" id="nama" name="nama">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="username" class="col-sm-2 col-form-label col-form-label-sm">Username</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control form-control-sm" id="username" name="username">
-                        </div>
-                    </div>
+<script>
+    $(document).ready(() => {
+        $('#btnNew').click(() => {
+            $.ajax({
+                url: 'user/newUser',
+                dataType: 'json',
+                beforeSend: function() {
+                    $('#btnNew').attr('disabled', 'disabled');
+                },
+                success: function(response) {
+                    $('#btnNew').removeAttr('disabled');
+                    if (response.error) {
+                        if (response.error.logout) {
+                            window.location.href = response.error.logout
+                        }
+                    } else {
+                        $('#viewModal').html(response.data).show();
+                        $('#addModal').modal('show');
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                }
+            });
+        })
+    })
+</script>
 
-                    <div class="form-group row">
-                        <label for="level" class="col-sm-2 col-form-label col-form-label-sm">Level</label>
-                        <div class="col-sm-10">
-                            <select id="level" class="form-control">
-                                <option selected>Choose</option>
-                                <?php foreach ($levels as $level) : ?>
-                                    <option value="<?= $level->id; ?>"> <?= $level->role; ?> </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="aktif" name="aktif" value="1">
-                        <label class="custom-control-label" for="aktif">Aktif</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <?= $this->endSection(); ?>

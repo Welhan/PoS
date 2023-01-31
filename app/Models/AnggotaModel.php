@@ -9,7 +9,7 @@ class AnggotaModel extends Model
     protected $table            = 'anggota';
     protected $primaryKey       = 'id';
     protected $returnType       = 'object';
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['nama', 'username', 'password', 'level', 'aktif'];
 
     public function getAnggota($userID = '')
     {

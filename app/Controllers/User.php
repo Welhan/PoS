@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\AnggotaModel;
 use App\Models\RoleModel;
 use App\Models\SubmenuModel;
+use Exception;
 
 class User extends BaseController
 {
@@ -76,6 +77,7 @@ class User extends BaseController
                 return;
             }
 
+            // Awal Validasi
             $validation = \Config\Services::validation();
             $valid = $this->validate([
                 'nama' => [
@@ -115,14 +117,54 @@ class User extends BaseController
                 $msg = [
                     'error' => [
                         'nama' => $validation->getError('nama'),
-                        // 'username' => $validation->getError('username'),
-                        // 'level' => $validation->getError('level'),
-                        // 'password' => $validation->getError('password'),
+                        'username' => $validation->getError('username'),
+                        'level' => $validation->getError('level'),
+                        'password' => $validation->getError('password'),
                     ]
                 ];
 
                 echo json_encode($msg);
                 return;
+            }
+            // Akhir validasi
+
+            $nama = $this->request->getPost('nama') ? $this->request->getPost('nama') : '';
+            $username = $this->request->getPost('username') ? $this->request->getPost('username') : '';
+            $password = $this->request->getPost('password') ? $this->request->getPost('password') : '';
+            $level = $this->request->getPost('level') ? $this->request->getPost('level') : '';
+            $aktif = $this->request->getPost('aktif') == 1 ? 1 : 0;
+
+            $data = [
+                'nama' => htmlspecialchars($nama, true),
+                'username' => htmlspecialchars($username, true),
+                'password' => password_hash(htmlspecialchars($password, true), PASSWORD_DEFAULT),
+                'level' => htmlspecialchars($level, true),
+                'aktif' => htmlspecialchars($aktif, true),
+            ];
+
+            try {
+                if ($this->anggotaModel->save($data)) {
+                    $alert = [
+                        'message' => 'User Berhasil Ditambahkan',
+                        'alert' => 'alert-info'
+                    ];
+
+                    $msg = [
+                        'process' => 'Process Success'
+                    ];
+                }
+            } catch (Exception $e) {
+                $alert = [
+                    'message' => 'User Tidak Berhasil Ditambahkan<br>' . $e->getMessage(),
+                    'alert' => 'alert-danger'
+                ];
+
+                $msg = [
+                    'process' => 'Process Terminated'
+                ];
+            } finally {
+                session()->setFlashdata($alert);
+                echo json_encode($msg);
             }
         } else {
             return redirect()->to('user');

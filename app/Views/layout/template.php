@@ -23,7 +23,7 @@ $menus = generate_menu(session('userID'));
     <link rel="stylesheet" href="assets/plugins/jqvmap/jqvmap.min.css">
 
     <link rel="stylesheet" href="assets/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
 
     <link rel="stylesheet" href="assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 

@@ -39,7 +39,7 @@
                         <label for="level" class="col-sm-2 col-form-label col-form-label-sm">Level</label>
                         <div class="col-sm-10">
                             <select id="level" class="form-control" name="level">
-                                <option selected>Choose</option>
+                                <option value="" selected>Choose</option>
                                 <?php foreach ($levels as $level) : ?>
                                     <option value="<?= $level->id; ?>"> <?= $level->role; ?> </option>
                                 <?php endforeach; ?>
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
                     <button type="submit" class="btn btn-primary" id="btnProcess">Save</button>
                 </div>
             </form>
@@ -63,7 +63,7 @@
 
 <script>
     $(document).ready(() => {
-        $('.formSubmit').submit((e) => {
+        $('.formSubmit').submit(function(e) {
             e.preventDefault();
 
             $.ajax({
@@ -76,7 +76,6 @@
                     $('#btnProcess').html('<i class="fa fa-spin fa-spinner"></i>');
                 },
                 success: function(response) {
-                    console.log(response.error.nama)
                     if (response.error) {
                         $('#btnProcess').removeAttr('disabled');
                         $('#btnProcess').html('Save');
@@ -116,7 +115,7 @@
                             $('#errPassword').html('');
                         }
                     } else {
-                        console.log('Oke')
+                        window.location.reload()
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {

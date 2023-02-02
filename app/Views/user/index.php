@@ -32,7 +32,10 @@
                                 <td><?= $no++; ?></td>
                                 <td><?= ucwords($user->nama); ?></td>
                                 <td><?= $user->role; ?></td>
-                                <td></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="editUser(<?= $user->id; ?>)"><i class="fas fa-pencil-alt"></i></button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteUser(<?= $user->id; ?>)"><i class="fas fa-trash"></i></button>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -48,6 +51,62 @@
 <?= $this->section('javascript'); ?>
 
 <script>
+    function editUser(id) {
+        $.ajax({
+            type: 'post',
+            url: 'user/editUser',
+            data: {
+                id
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('.btn').attr('disabled', 'disabled');
+            },
+            success: function(response) {
+                $('.btn').removeAttr('disabled');
+                if (response.error) {
+                    if (response.error.logout) {
+                        window.location.href = response.error.logout
+                    }
+                } else {
+                    $('#viewModal').html(response.data).show();
+                    $('#editModal').modal('show');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+            }
+        });
+    }
+
+    function deleteUser(id) {
+        $.ajax({
+            type: 'post',
+            url: 'user/deleteUser',
+            data: {
+                id
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('.btn').attr('disabled', 'disabled');
+            },
+            success: function(response) {
+                $('.btn').removeAttr('disabled');
+                if (response.error) {
+                    if (response.error.logout) {
+                        window.location.href = response.error.logout
+                    }
+                } else {
+                    $('#viewModal').html(response.data).show();
+                    $('#deleteModal').modal('show');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+            }
+        });
+    }
+
     $(document).ready(() => {
         $('#btnNew').click(() => {
             $.ajax({

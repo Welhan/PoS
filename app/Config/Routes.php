@@ -39,6 +39,10 @@ $routes->group('user', static function ($routes) {
     $routes->get('', 'User::index');
     $routes->get('newUser', 'User::getFormNew');
     $routes->post('save', 'User::saveUser');
+    $routes->post('editUser', 'User::getFormEdit');
+    $routes->post('update', 'User::updateUser');
+    $routes->post('deleteUser', 'User::getFormDelete');
+    $routes->post('delete', 'User::deleteUser');
 });
 
 /*
